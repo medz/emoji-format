@@ -35,11 +35,15 @@ class EmojiFormat
             }
 
         } elseif (is_string($data)) {
-            $data = preg_replace_callback('/[\xf0-\xf7].{3}/', function ($data)
+
+            $left = static::$left;
+            $right = static::$right;
+
+            $data = preg_replace_callback('/[\xf0-\xf7].{3}/', function ($data) use ($left, $right)
             {
                 $data = array_pop($data);
                 $data = base64_encode($data);
-                $data = sprintf('%s%s%s', static::$left, $data, static::$right);
+                $data = sprintf('%s%s%s', $left, $data, $right);
                 return $data;
             }, $data);
         }
